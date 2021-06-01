@@ -7,9 +7,9 @@
 <br/>
 
 
-It would be great if more developers would silently emit message objects from their libraries instead of just spamming logs straight into the console. Maybe the developer of the consuming app wants to send it to a server, store it in a database or take any other action based upon the specifics of a message. Many things are possible, and there is no need to not let the user of your lib decide what to do with your libs messages.
+It would be great if more developers would silently emit message objects from their libraries instead of spamming logs in the console. Maybe the developer of the consuming app wants to send it to a server, store it in a database or take any other action based upon the specifics of a message. Many things are possible, and there is no need to not let the user of your lib decide what to do with your libs messages.
 
-MessageEvents is an attempt to replace console statements in libraries with a generic and much more powerful system of showing errors and sending out data from your lib. Although there are many great event and log libraries out there, none are as lean and specific as I wished for. I don't want to buy an entire grocery store when I only need a piece of bread.. MessageEvents main differences compared to some popular event and logging libraries are:
+MessageEvents is an attempt to replace console statements in libraries with a generic and much more powerful system of showing errors and sending out data from your lib. Although there are many great event and log libraries out there, none are as lean and specific as I wished for. MessageEvents main differences compared to some popular event and logging libraries are:
 
 	- you can format and send messages before a .on handler is installed
 	- it is non opinionated and extremely lightweight
@@ -20,7 +20,7 @@ MessageEvents is an attempt to replace console statements in libraries with a ge
 
 Here are some basic examples of how to use it
 ```javascript
-// your-lib.js
+// some-lib.js
 const MessageEvents = require( 'message-events' );
 
 // create a new instance for messages from your app
@@ -29,7 +29,7 @@ const message = new MessageEvents;
 // with the format method you can format every message you emit into the format of your liking
 message.format( 'error', (text) => {
 	return {
-		sender: 'myApp',
+		sender: 'some-lib.js',
 		type: 'error',
 		text,
 		// appVersion: APP_VERSION,
@@ -62,7 +62,7 @@ if ( process.env.NODE_ENV === 'production' ){
 ```
 <br/>
 
-In a large app it's better to make the MessageEvents instance(s) "public" by putting them in a separate module, like so:
+In a large app it's better to make the MessageEvents instance(s) "public" by putting them in a separate module:
 
 ```javascript
 // instance/message-events.js
@@ -83,7 +83,7 @@ if ( process.env.NODE_ENV !== 'production' ){
 // you could define a generic format for your messages
 const formatMessage = (type, module, args) => {
 	return {
-		sender: 'myApp',
+		sender: 'some-lib.js',
 		module,
 		type,
 		text: args,
@@ -96,7 +96,7 @@ message.format( 'error', (module, text) => formatMessage('error', module, text) 
 
 
 // and then use it in some-module.js
-const { me } = require( '@instance/message-events.js' );
+const { message } = require( '@instance/message-events.js' );
 
 message.log( 'no formatting was defined for message.log' );
 message.info( 'some-module.js:', 'hello message-events!' );
@@ -105,13 +105,13 @@ message.error( 'some-module.js:', 'your error message here' );
 //
 // no formatting was defined for message.log
 // {
-//   sender: 'myApp',
+//   sender: 'some-lib.js',
 //   module: 'some-module.js:',
 //   type: 'info',
 //   text: 'hello message-events!'
 // }
 // {
-//   sender: 'myApp',
+//   sender: 'some-lib.js',
 //   module: 'some-module.js:',
 //   type: 'error',
 //   text: 'your error message here'

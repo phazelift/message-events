@@ -26,7 +26,7 @@
 const { isFunction, isString, forceArray, forceFunction } = require( 'types.js' );
 
 
-const APP_VERSION			= '0.3.2';
+const APP_VERSION			= '0.3.3';
 const ERROR 				= 'error';
 const FORMAT 				= 'format';
 const INFO 					= 'info';

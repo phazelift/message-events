@@ -2,7 +2,7 @@
   "name": "message-events",
   "author": "dennis van der sluis (phazelift@gmail.com)",
   "license": "MIT",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "(pre)formatted message events",
   "main": "message-events.min.js",
   "scripts": {
