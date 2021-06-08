@@ -2,7 +2,7 @@
 
 <br/>
 
-## (pre)formatted message events
+## (pre)formatted message events for improved logging
 
 <br/>
 

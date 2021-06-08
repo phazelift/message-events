@@ -26,14 +26,14 @@
 const { isFunction, isString, forceArray, forceFunction } = require( 'types.js' );
 
 
-const APP_VERSION			= '0.3.3';
-const ERROR 				= 'error';
-const FORMAT 				= 'format';
-const INFO 					= 'info';
+const APP_VERSION				= '0.3.4';
+const ERROR 					= 'error';
+const FORMAT 					= 'format';
+const INFO 						= 'info';
 const MAX_ID_LENGTH			= 48;
 const MESSAGE_EVENTS 		= 'MessageEvents';
-const OFF 					= 'off';
-const ON 					= 'on';
+const OFF 						= 'off';
+const ON 						= 'on';
 const INTERNAL_METHOD_IDS	= [ 'constructor', OFF, ON, FORMAT ];
 
 let message = undefined;
@@ -44,7 +44,7 @@ let message = undefined;
 // error handling and messages
 //
 const ERROR_INVALID_ARGUMENTS	= 'invalid or missing argument(s)!';
-const ERROR_INVALID_HANDLER		= 'invalid or missing handler!';
+const ERROR_INVALID_HANDLER	= 'invalid or missing handler!';
 const ERROR_INTERNAL_ID			= 'internal method names are not allowed!';
 const ERROR_INVALID_ID_LENGTH	= 'invalid id length!';
 

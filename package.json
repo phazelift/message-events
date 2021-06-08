@@ -2,8 +2,8 @@
   "name": "message-events",
   "author": "dennis van der sluis (phazelift@gmail.com)",
   "license": "MIT",
-  "version": "0.3.3",
-  "description": "(pre)formatted message events",
+  "version": "0.3.4",
+  "description": "(pre)formatted message events for improved logging",
   "main": "message-events.min.js",
   "scripts": {
     "test": "jest"
@@ -17,6 +17,7 @@
   "keywords": [
     "formatted",
     "message",
+    "console",
     "log",
     "events"
   ]
