@@ -25,8 +25,7 @@
 
 const { isFunction, isString, forceArray, forceFunction } = require( 'types.js' );
 
-
-const APP_VERSION				= '0.3.4';
+const APP_VERSION				= '0.4.0';
 const ERROR 					= 'error';
 const FORMAT 					= 'format';
 const INFO 						= 'info';
@@ -110,10 +109,10 @@ class MessageEvents {
 
 	static on = ( id, handler ) => {
 		message.on( id, handler );
-		if ( id == INFO ) showInfoMessage();
+		if (id == INFO) showInfoMessage();
 	};
 
-	static off = ( id ) => message.off( id );
+	static off = (id) => message.off( id );
 	//
 	//
 
@@ -122,6 +121,12 @@ class MessageEvents {
 	// instance
 	//
 	#formats = {};
+
+
+	constructor( id, handler ){
+		if ( isString(id) && isFunction(handler) )
+			this.format( id, handler );
+	}
 
 
 	format( id, handler ){
@@ -141,6 +146,7 @@ class MessageEvents {
 		return this;
 	}
 
+
 	// .off only removes the handler, not the format, so when you re-apply a new handler the format is still in place
 	off( id ){
 		 if ( id == undefined ){
@@ -153,6 +159,7 @@ class MessageEvents {
 
 		return this;
 	}
+
 
 	on( id, handler ){
 		if ( validId(id, ON) && validHandler(handler, ON) ){

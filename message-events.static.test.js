@@ -4,9 +4,9 @@ const MessageEvents	= require( './message-events.js' );
 
 const {
 	ERROR_INVALID_ARGUMENTS,
-	ERROR_INVALID_HANDLER,	
+	ERROR_INVALID_HANDLER,
 	ERROR_INTERNAL_ID,
-	ERROR_INVALID_ID_LENGTH,	
+	ERROR_INVALID_ID_LENGTH,
 } = MessageEvents;
 
 
@@ -36,14 +36,14 @@ test( 'test MessageEvents.on info returns info object', () => {
 	expect( result.type ).toBe( 'info' );
 	expect( typeOf(result.version) ).toBe( 'string' );
 });
-	
+
 
 test( 'test MessageEvents.on input/arguments: no error on empty on call', () => {
 	MessageEvents.on( 'error', fillResult  );
 	expect( result ).toEqual( {} );
 	expect( consoleData ).toBe( '' );
 });
-	
+
 test( 'test MessageEvents.on input/arguments robustness - no arguments', () => {
 	MessageEvents.on();
 	expect( result ).toEqual({
@@ -80,7 +80,7 @@ test( 'test MessageEvents.on input/arguments robustness - invalid handler', () =
 });
 
 
-test( 'test MessageEvents.on error messages', () => {	
+test( 'test MessageEvents.on error messages', () => {
 	const me = new MessageEvents();
 	expect( consoleData ).toBe( '' );
 
@@ -143,7 +143,7 @@ test( 'test MessageEvents.on error messages', () => {
 });
 
 
-test( 'test MessageEvents.on handler working as expected', () => {	
+test( 'test MessageEvents.on handler working as expected', () => {
 	const me = new MessageEvents();
 	let DATA = { a: 1 };
 	me.on( 'info', fillResult );
@@ -160,7 +160,7 @@ test( 'test MessageEvents.on handler working as expected', () => {
 });
 
 
-test( 'test MessageEvents.off handler working as expected', () => {	
+test( 'test MessageEvents.off handler working as expected', () => {
 	const me = new MessageEvents();
 	const DATA = { a: 1 };
 	me.on( 'info', fillResult );
@@ -178,11 +178,11 @@ test( 'test MessageEvents.off handler working as expected', () => {
 });
 
 
-test( 'test MessageEvents .format and .on handler declaration order should not matter', () => {	
+test( 'test MessageEvents .format and .on handler declaration order should not matter', () => {
 	const me = new MessageEvents();
 	me.on( 'info', fillResult );
-	me.info( 'on came first' );
-	expect( result ).toBe( 'on came first' );
+	me.info( '.on came first' );
+	expect( result ).toBe( '.on came first' );
 
 	me.format( 'info', (text) => {
 		return { text };
@@ -198,3 +198,26 @@ test( 'test MessageEvents .format and .on handler declaration order should not m
 	me.info( 'format reset' );
 	expect( result ).toBe( 'format reset' );
 });
+
+
+test( '.format can be initialized directly via the constructor', () => {
+	const me = new MessageEvents( 'info', (text) => {
+		return { text };
+	});
+	me.on( 'info', fillResult );
+	me.info( 'testing' );
+	expect( result ).toEqual( {text: 'testing'} );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
