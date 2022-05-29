@@ -6,7 +6,9 @@
   "description": "(pre)formatted message events for improved logging",
   "main": "message-events.min.js",
   "scripts": {
-    "test": "jest"
+    "build": "npm run uglify",
+    "test": "jest",
+    "uglify": "terser message-events.js -c -m -o message-events.min.js"
   },
   "devDependencies": {
     "jest": "^26.6.3"

@@ -20,18 +20,24 @@ MessageEvents is an attempt to replace console statements in libraries with a ge
 
 Here are some basic examples of how to use it
 ```javascript
-// some-lib.js
+// my-lib.js
 const MessageEvents = require( 'message-events' );
 
-// create a new instance for messages from your app
-const message = new MessageEvents;
+// totally minimalistic working example
+let message = new MessageEvents;
+message.on( 'error', console.error );
+message.error( 'arguments', 'to', 'console.error' );
+// arguments to console.error
 
+
+// a bit more elaborate
 // with the format method you can format every message you emit into the format of your liking
-message.format( 'error', (text) => {
+message.format( 'error', (method, ...text) => {
 	return {
-		sender: 'some-lib.js',
+		sender: 'my-lib.js',
 		type: 'error',
-		text,
+		method,
+		text: text.join(' '),
 		// appVersion: APP_VERSION,
 		// userId: '...',
 		// etc..
@@ -39,30 +45,53 @@ message.format( 'error', (text) => {
 });
 
 // you can now write error messages where needed,
-// but they are only to be seen/received after a .on handler is installed
-message.error( 'enter the void!' );
+// but they are to be seen/received only after a .on handler is installed
+message.error( 'idOfMethod', 'enter', 'the', 'void!' );
+
+// add more types of messages when needed
+message.format( 'info', (...text) => {
+	return {
+		sender: 'my-lib.js',
+		type: 'info',
+		text: text.join(' '),
+	};
+});
+// now you can do
+message.info( 'this info can go to another user defined handler' );
+
 
 // make your messages available for users of your lib
-export default {
-	on: (type, handler) => message.on(type, handler);
-}
-// end of your-lib.js
+class MyLib{}
+// allow a user to add a handler for the messages
+MyLib.on = (type: string, handler: Function) => message.on(type, handler);
+module.exports = MyLib
+// end of module
+
 
 
 // in your users file
 const lib = require( 'your-lib' );
 
-// for development your user can install a handler to direct your libs messages to the console,
-// while in production they can send these same errors to a server for monitoring
+// for development your user could install a handler to direct your libs messages to the console,
+// while in production they can send these same errors instead to a server for monitoring
 if ( process.env.NODE_ENV === 'production' ){
 	lib.on( 'error', (data) => {
 		axios.post( 'solib.api.domain/error-messages', data );
 	});
 } else lib.on( 'error', console.error );
+
+
+// when you only need one quick message type you can call .format directly via the constructor
+message = new MessageEvents( 'error', (...text) => {
+	return {
+		sender: 'myModule',
+		text	: text.join(' '),
+	};
+});
 ```
 <br/>
 
-In a large app it's better to make the MessageEvents instance(s) "public" by putting them in a separate module:
+In a large app it might be better to make the MessageEvents instance(s) "public" by putting them in a separate module:
 
 ```javascript
 // instance/message-events.js
@@ -83,7 +112,7 @@ if ( process.env.NODE_ENV !== 'production' ){
 // you could define a generic format for your messages
 const formatMessage = (type, module, args) => {
 	return {
-		sender: 'some-lib.js',
+		sender: 'my-lib.js',
 		module,
 		type,
 		text: args,
@@ -105,13 +134,13 @@ message.error( 'some-module.js:', 'your error message here' );
 //
 // no formatting was defined for message.log
 // {
-//   sender: 'some-lib.js',
+//   sender: 'my-lib.js',
 //   module: 'some-module.js:',
 //   type: 'info',
 //   text: 'hello message-events!'
 // }
 // {
-//   sender: 'some-lib.js',
+//   sender: 'my-lib.js',
 //   module: 'some-module.js:',
 //   type: 'error',
 //   text: 'your error message here'
