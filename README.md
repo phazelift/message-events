@@ -12,7 +12,7 @@ It would be great if more developers would silently emit message objects from th
 MessageEvents is an attempt to replace console statements in libraries with a generic and much more powerful system of showing errors and sending out data from your lib. Although there are many great event and log libraries out there, none are as lean and specific as I wished for. MessageEvents main differences compared to some popular event and logging libraries are:
 
 	- you can format and send messages before a .on handler is installed
-	- it is non opinionated and extremely lightweight
+	- it is non-opinionated and extremely lightweight
 	- pretty robust and well tested
 	- sends out message objects itself
 
@@ -81,17 +81,18 @@ if ( process.env.NODE_ENV === 'production' ){
 } else lib.on( 'error', console.error );
 
 
-// when you only need one quick message type you can call .format directly via the constructor
+// when you only need one quick message type, you can call .format directly via the constructor
 message = new MessageEvents( 'error', (...text) => {
 	return {
 		sender: 'myModule',
+		type: 'error',
 		text	: text.join(' '),
 	};
 });
 ```
 <br/>
 
-In a large app it might be better to make the MessageEvents instance(s) "public" by putting them in a separate module:
+In a large app it might be a good idea to make the MessageEvents instance(s) "public" by putting them in a separate module:
 
 ```javascript
 // instance/message-events.js
